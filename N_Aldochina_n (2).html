@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+
+.grid-container {
+  display: grid;
+  grid-template-columns: 50% 30% 20%;
+  grid-template-rows: 100px auto 400px 50px; 
+  grid-gap: 5px;
+  margin: 10px;
+  }
+
+  header {  
+    grid-column: 1 / span 3;
+    background-color: forestgreen;
+    color: darkred;
+    font-size: 40px;
+    text-align: center;    
+    line-height: 70px;
+    }
+
+    header>img {
+      float:  left;
+      vertical-aline: middle;
+      }
+
+  .galerija {  
+    grid-column: 1 / span 2;
+    background-color: red;
+    align-items: center;
+    justify-content: center;
+    height: auto;
+    }
+
+  .side {  
+    grid-column: 3; 
+    grid-row: 2 / span 2;
+    background-color: papayawhip;
+    } 
+
+  .view {    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    }
+
+  .view>img { 
+    height: 100%;
+    width: auto;
+    object-fit: cover;
+    }
+
+  .info {    
+    background-color: peachpuff;
+    }
+
+  footer {    
+    grid-column: 1 / span 3;
+    background-color: lightsalmon;
+    color: white;
+    }  
+
+  .grid-container>div,header,footer {
+    border: 1px solid grey;
+    padding:  10px;
+    }
+
+  .galerija>div {
+    float:  left;
+    height: auto;
+    margin-right: 10px;
+    }
+
+  #tip {
+    position: absolute; width: 250px; display: none; 
+    border: 1px solid #000; padding: 4px;
+    font-family: sans-serif; font-size: 9pt;
+    color: #333; background: #ffe5ff;
+    }
+
+</style>
+
+<script>
+
+  function bigview(curr_img) {
+    var foto=document.querySelectorAll(".galerija img");
+    for(let i=0;i<foto.length;i++){        
+    foto[i].style.width="auto";
+    foto[i].style.height="100%";
+    foto[i].parentNode.style.height="90px";    
+    }
+
+    document.getElementsByClassName("view")[0].innerHTML=curr_img.parentNode.innerHTML;
+    document.getElementById("info").value=curr_img.getAttribute("alt");
+
+    var bigfoto=document.getElementsByClassName("view")[0].childNodes[1];
+
+    document.getElementById("issaugoti").onclick=function () {
+      curr_img.setAttribute("alt", document.getElementById("info").value);      
+      bigfoto.alt=document.getElementById("info").value;
+      }
+    document.getElementById("trinti").onclick=function () {      
+      curr_img.remove(curr_img);
+      document.getElementsByClassName("view")[0].removeChild(bigfoto);
+      document.getElementById("info").value="";
+      } 
+  }
+
+function spalva(){
+  var radio=document.querySelectorAll("input[type=radio]");
+  var hf;
+    for (let i=0;i<radio.length;i++) {
+      if (radio[i].checked) {
+      hf=radio[i].value;
+      } 
+    }   
+  var sp=document.querySelector("input[type=color]"); 
+  objekt=document.getElementById(hf);
+  objekt.style.backgroundColor=sp.value;  
+}
+
+function aprasymas(msg) {
+  let chbox=document.getElementById("check");  
+  if (chbox.checked) {
+      tip.style=document.getElementById("tip").style;
+      if (msg) {
+        document.getElementById("tip").innerHTML=msg;
+        tip.style.display="block";
+        } 
+      else { 
+      tip.style.display="none";
+      } 
+    }
+  }      
+
+document.onmousemove=moveTip;
+function moveTip(e) {
+  tipStyle=document.getElementById("tip").style;
+  w=250;
+  x=e.pageX; 
+  y=e.pageY;  
+  if ((x+w+10)<document.body.clientWidth) { 
+    tipStyle.left=x+'px';
+    }
+  else { 
+    tipStyle.left=x-w+'px';
+    }  
+  tipStyle.top=y+20+'px';
+}
+
+function pritaikyti(){
+  var inputai=document.getElementsByClassName("size");
+      
+  var plotis=Number(inputai[0].value);
+  var aukstis=Number(inputai[1].value);
+
+  var foto=document.querySelectorAll(".galerija img");
+    for(let i=0;i<foto.length;i++){
+      foto[i].style.width=plotis+"px";
+      foto[i].style.height=aukstis+"px";
+      foto[i].parentNode.style.height="auto";
+      }
+}
+  
+  </script>
+
+  <title>
+    Natalja Aldochina - Uzduotis
+  </title>
+
+</head>
+
+<body>
+
+<div class="grid-container">
+  <header id="header" ><img src="italy.jpg" height=80px />Italy</header>
+  
+  <div class="galerija">
+    <div>
+      <img alt="Rome, Vatican Gardens" onmouseover="aprasymas(this.alt)" onMouseOut="aprasymas()"ondblclick="bigview(this)" src="VaticanGardens.jpg"  height="90px" />
+      <div id="tip"></div> 
+    </div> 
+    <div>
+      <img alt="Rome, Ostia Antica" onmouseover="aprasymas(this.alt)" onMouseOut="aprasymas()" ondblclick="bigview(this)" src="OstiaAntica.jpg"  height="90px" />
+      <div id="tip"></div> 
+    </div>
+    <div>
+      <img alt="Tivoli, Villa Adriana" onmouseover="aprasymas(this.alt)" onMouseOut="aprasymas()"  ondblclick="bigview(this)" src="Tivoli.jpg" height="90px" />
+      <div id="tip"></div>
+    </div>
+    <div> 
+      <img alt="Venice canals" onmouseover="aprasymas(this.alt)" onMouseOut="aprasymas()" ondblclick="bigview(this)" src="Venezia.jpg" height="90px" />
+      <div id="tip"></div> 
+    </div>
+  </div>
+  
+  <div class="side">
+    Parinkite spalva<input id="spalva" type="color" value=#008000 /> <br />
+      <br />
+    <input type="radio" name="hfswitch" value="header" />Header<br />
+    <input type="radio" name="hfswitch" value="footer" />Footer<br />
+    <button onclick="spalva();">Pritaikyti</button>
+    <br /> <hr /> <br />
+    Paveikslu galerijoje parametrai<br /><br />    
+    Plotis: <input class="size" type="text" /><br /><br />
+    Aukstis:<input class="size" type="text" /><br /><br />
+    <button onclick="pritaikyti();">Pritaikyti</button><br />
+    <hr />
+    Rodyti aprasyma:<input id="check" type="checkbox" />
+  </div>   
+ 
+  <div class="view">
+
+  </div>
+ 
+  <div class="info">
+    Paveikslo aprasymas<br /><br />    
+    <input type="text" id="info" /><br />    
+    <button id="issaugoti">Issaugoti aprasyma</button><br />
+    <br />
+    <button id="trinti">Trinti is galerijos</button><br />
+  </div>  
+  
+  <footer id="footer" ></footer>
+  
+</div>
+
+</body>
+</html>
